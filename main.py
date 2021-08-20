@@ -286,14 +286,13 @@ try:
 		diff = r[(cursor + len(srch)):endof]
 		print(diff)
 		cursor = endofLink+2
-		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks nourlexpansion lx\">[" + wigLink + diff + " c]</span>"
+		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks nourlexpansion lx\"><sup>[" + wigLink + diff + " C]</sup></span>"
 		print(r[(cursor + len(srch) + len(diff)):endofLink+2])
 	#print(r)
 	#print(q)
 except (KeyboardInterrupt):
 	print("Could not do it for some reason.")
 	quit()
-
 
 t = s.get(editTokenUrl)
 ########## This line actually hits the API for an edit token.

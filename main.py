@@ -46,8 +46,7 @@ tmpfilename = "tmp.txt"
 # Page names below.
 pagename = "User:JPxG/CCIsandbox"
 apiBase = "https://en.wikipedia.org/w/api.php"
-wigLink = "https://copyvios.toolforge.org/?lang=en&project=wikipedia&title=&action=search&use_engine=1&use_links=1&turnitin=0&oldid="
-
+wigLink = "https://copyvios.toolforge.org/?lang=en&project=wikipedia&action=search&use_engine=1&use_links=1&oldid="
 # This is what the bot will interpret as the last line of header text on the page.
 # All this does is put a bunch of blank lines in the terminal.
 #clearScreen = 0

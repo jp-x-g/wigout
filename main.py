@@ -252,6 +252,48 @@ aLog("Login successful. Authenticated as " + l['login']['lgusername'])
 	})"""
 	# Don't know why the heck this doesn't work.
 
+try:
+	r = requests.get("https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvslots=*&rvprop=content&formatversion=2&format=json&titles=" + pagename)
+	# Actually hit the URL in this line, and get a page, which will be of type "Response"
+	r = r.text
+	#print(r)
+	# Make it so that "r" is the text of the response, not a "Response" of the response
+	r = json.loads(r)
+	# Make it so that "r" is the parsed JSON of "r", not text
+	r = r['query']['pages'][0]['revisions'][0]['slots']['main']['content']
+	# The MediaWiki API is so freakin' normal and cool. I love json!!!!!!!
+	#print(r)
+	cursor = 0
+	# Initialize cursor to the beginning of the string.
+	q = ""
+	# Initialize string that we're going to put the new version of the page into.
+	srch = "[[Special:Diff/"
+	# Set the search string for the beginning of a diff line.
+	findCount = 0
+	while (cursor < len(r)):
+		print(str(cursor) + " / " + str(findCount))
+		lastCursor = cursor
+		cursor = r.find(srch, lastCursor)
+		if (cursor == -1):
+			print("Last one found. Total: " + str(findCount))
+			break
+		findCount = findCount + 1
+		# Finds the next occurrence of the string.
+		endof = r.find("|", cursor)
+		# Finds the pipe in the link.
+		endofLink = r.find("]]", endof)
+		#print(r[cursor:endofLink])
+		diff = r[(cursor + len(srch)):endof]
+		print(diff)
+		cursor = endofLink+2
+		q = q + r[lastCursor:cursor] + "[" + wigLink + diff + " c]"
+		print(r[(cursor + len(srch) + len(diff)):endofLink+2])
+	#print(r)
+	print(q)
+except (KeyboardInterrupt):
+	print("Could not do it for some reason.")
+	quit()
+
 
 t = s.get(editTokenUrl)
 ########## This line actually hits the API for an edit token.

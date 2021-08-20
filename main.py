@@ -323,6 +323,35 @@ try:
 		cursor = endof+2
 		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks\"><sup>[" + wigLinkTitle + link + " C]</sup></span>" + z
 		print(r[(cursor + len(srch) + len(diff)):endof+2])
+	#######################################################
+	#	That same exact thing but for new articles...
+	#######################################################
+	cursor = 0
+	# Initialize cursor to the beginning of the string.
+	r = q
+	q = ""
+	# Initialize string that we're going to put the new version of the page into.
+	srch = "* '''N''' [[:"
+	# Set the search string for the beginning of a diff line.
+	findCount = 0
+	while (cursor < len(r)):
+		print(str(cursor) + " / " + str(findCount))
+		lastCursor = cursor
+		cursor = r.find(srch, lastCursor)
+		if (cursor == -1):
+			print("Last one found. Total: " + str(findCount))
+			break
+		findCount = findCount + 1
+		# Finds the next occurrence of the string.
+		endof = r.find("]]", cursor)
+		# Finds the end of the link.
+		#print(r[cursor:endofLink])
+		link = r[(cursor + len(srch)):endof]
+		link = link.replace(" ","_").replace("&","%26").replace("?","%3F").replace(",", "%2C").replace('"', '%22').replace("'", "%27").replace("+", "%2B").replace("/","%2F").replace("=","%3D")
+		print(link)
+		cursor = endof+2
+		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks\"><sup>[" + wigLinkTitle + link + " C]</sup></span>" + z
+		print(r[(cursor + len(srch) + len(diff)):endof+2])
 	#print(r)
 	#print(q)
 except (KeyboardInterrupt):

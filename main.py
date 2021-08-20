@@ -47,7 +47,9 @@ tmpfilename = "tmp.txt"
 pagename = "User:JPxG/CCIsandbox"
 apiBase = "https://en.wikipedia.org/w/api.php"
 wigLink = "https://copyvios.toolforge.org/?lang=en&project=wikipedia&action=search&use_engine=1&use_links=1&oldid="
-# This is what the bot will interpret as the last line of header text on the page.
+
+z = "​" # NOT AN EMPTY STRING! THIS IS A ZERO-WIDTH SPACE.
+
 # All this does is put a bunch of blank lines in the terminal.
 #clearScreen = 0
 #if clearScreen:
@@ -61,7 +63,7 @@ wigLink = "https://copyvios.toolforge.org/?lang=en&project=wikipedia&action=sear
 parser = argparse.ArgumentParser(description="CCI Wigout -- modifies CCI casepages to give Earwig copyvio-checker links for diffs.", epilog="Wow!")
 #parser.add_argument("-b", "--back", metavar="DAYS", help="Days to go back. Default is 7.", default=7)
 #parser.add_argument("-l", "--latest", metavar="YYYY-MM-DD", help="Date to parse back from. Default is today (UTC).", default=today)
-parser.add_argument("-n", "--note", metavar="TEXT", help="Comment to add to edit summary.", default="Updating with")
+parser.add_argument("-n", "--note", metavar="TEXT", help="Comment to add to edit summary.", default="Adding diff links to Earwig's Copyvio Detector ")
 parser.add_argument("-i", "--input", metavar="blahblah.txt", help="Input file to read. Default is " + pagename + ".", default=pagename)
 parser.add_argument("-u", "--username", metavar="JohnDoe@OfD_poster", help="Specify username to authenticate with. Default is to read from " + os.getcwd() + "/" + configname + "/" + logindeets + ".", default = "Didn't specify one.")
 parser.add_argument("-p", "--password", metavar="hunter2", help="Specify password to authenticate with. Default is to read from " + os.getcwd() + "/" + configname + "/" + logindeets + ".", default = "Didn't specify one.")
@@ -285,7 +287,7 @@ try:
 		diff = r[(cursor + len(srch)):endof]
 		print(diff)
 		cursor = endofLink+2
-		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks nourlexpansion lx\"><sup>[" + wigLink + diff + " C]</sup></span>"
+		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks\"><sup>[" + wigLink + diff + " C]</sup></span>" + z
 		print(r[(cursor + len(srch) + len(diff)):endofLink+2])
 	#print(r)
 	#print(q)
@@ -298,7 +300,7 @@ t = s.get(editTokenUrl)
 token = json.loads(t.text)['query']['tokens']['csrftoken']
 
 execTime = (datetime.now(timezone.utc) - startTime).total_seconds()
-profile = " ~ Completed in " + str(round(execTime,3)) + "s · CCI WigOut v" + version + " · JPxG 2021"
+profile = "~ " + findCount + " links expanded in " + str(round(execTime,3)) + "s · CCI WigOut v" + version + " · JPxG 2021"
 
 if forReal == 1:
 	edit = s.post(apiBase, data={

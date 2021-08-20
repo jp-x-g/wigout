@@ -300,7 +300,7 @@ t = s.get(editTokenUrl)
 token = json.loads(t.text)['query']['tokens']['csrftoken']
 
 execTime = (datetime.now(timezone.utc) - startTime).total_seconds()
-profile = "~ " + findCount + " links expanded in " + str(round(execTime,3)) + "s · CCI WigOut v" + version + " · JPxG 2021"
+profile = "~ " + str(findCount) + " links expanded in " + str(round(execTime,3)) + "s · CCI WigOut v" + version + " · JPxG 2021"
 
 if forReal == 1:
 	edit = s.post(apiBase, data={

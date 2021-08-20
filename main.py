@@ -48,6 +48,8 @@ pagename = "User:JPxG/CCIsandbox"
 apiBase = "https://en.wikipedia.org/w/api.php"
 wigLink = "https://copyvios.toolforge.org/?lang=en&project=wikipedia&action=search&use_engine=1&use_links=1&oldid="
 
+wigLinkTitle = "https://copyvios.toolforge.org/?lang=en&project=wikipedia&action=search&use_engine=1&use_links=1&title="
+
 z = "​" # NOT AN EMPTY STRING! THIS IS A ZERO-WIDTH SPACE.
 
 # All this does is put a bunch of blank lines in the terminal.
@@ -264,6 +266,9 @@ try:
 	r = r['query']['pages'][0]['revisions'][0]['slots']['main']['content']
 	# The MediaWiki API is so freakin' normal and cool. I love json!!!!!!!
 	#print(r)
+	#######################################################
+	#	Now we search-and-replace to add the diff links.
+	#######################################################
 	cursor = 0
 	# Initialize cursor to the beginning of the string.
 	q = ""
@@ -285,10 +290,39 @@ try:
 		endofLink = r.find("]]", endof)
 		#print(r[cursor:endofLink])
 		diff = r[(cursor + len(srch)):endof]
-		print(diff)
+		#print(diff)
 		cursor = endofLink+2
 		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks\"><sup>[" + wigLink + diff + " C]</sup></span>" + z
 		print(r[(cursor + len(srch) + len(diff)):endofLink+2])
+	#######################################################
+	#	Now we search-and-replace to add the article links.
+	#######################################################
+	cursor = 0
+	# Initialize cursor to the beginning of the string.
+	r = q
+	q = ""
+	# Initialize string that we're going to put the new version of the page into.
+	srch = "* [[:"
+	# Set the search string for the beginning of a diff line.
+	findCount = 0
+	while (cursor < len(r)):
+		print(str(cursor) + " / " + str(findCount))
+		lastCursor = cursor
+		cursor = r.find(srch, lastCursor)
+		if (cursor == -1):
+			print("Last one found. Total: " + str(findCount))
+			break
+		findCount = findCount + 1
+		# Finds the next occurrence of the string.
+		endof = r.find("]]", cursor)
+		# Finds the end of the link.
+		#print(r[cursor:endofLink])
+		link = r[(cursor + len(srch)):endof]
+		link = link.replace(" ","_").replace("&","%26").replace("?","%3F").replace(",", "%2C").replace('"', '%22').replace("'", "%27").replace("+", "%2B").replace("/","%2F").replace("=","%3D")
+		print(link)
+		cursor = endof+2
+		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks\"><sup>[" + wigLinkTitle + link + " C]</sup></span>" + z
+		print(r[(cursor + len(srch) + len(diff)):endof+2])
 	#print(r)
 	#print(q)
 except (KeyboardInterrupt):

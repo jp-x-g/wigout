@@ -286,10 +286,10 @@ try:
 		diff = r[(cursor + len(srch)):endof]
 		print(diff)
 		cursor = endofLink+2
-		q = q + r[lastCursor:cursor] + "[" + wigLink + diff + " c]"
+		q = q + r[lastCursor:cursor] + "<span class=\"plainlinks nourlexpansion lx\">[" + wigLink + diff + " c]</span>"
 		print(r[(cursor + len(srch) + len(diff)):endofLink+2])
 	#print(r)
-	print(q)
+	#print(q)
 except (KeyboardInterrupt):
 	print("Could not do it for some reason.")
 	quit()
@@ -300,7 +300,7 @@ t = s.get(editTokenUrl)
 token = json.loads(t.text)['query']['tokens']['csrftoken']
 
 execTime = (datetime.now(timezone.utc) - startTime).total_seconds()
-profile = " ~ Completed in " + str(round(totalTime,3)) + "s · CCI WigOut v" + version + " · [[User:JPxG|JPxG]] 2021"
+profile = " ~ Completed in " + str(round(execTime,3)) + "s · CCI WigOut v" + version + " · [[User:JPxG|JPxG]] 2021"
 
 if forReal == 1:
 	edit = s.post(apiBase, data={
